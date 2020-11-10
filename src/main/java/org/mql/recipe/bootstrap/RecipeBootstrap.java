@@ -18,7 +18,7 @@ import java.util.*;
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private Set<Category> categories;
-    private Set<Ingredient> ingredients;
+    private List<Ingredient> ingredients;
     private Note note;
 
 
@@ -57,7 +57,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
             note.setRecipe(recipe);
             recipe.setNote(note);
             addIngredients();
-            recipe.setIngredient(ingredients);
+            recipe.setIngredients(ingredients);
             addCategories();
             recipe.setCategories(categories);
             recipeRepository.save(recipe);
@@ -77,7 +77,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     }
 
     private void addIngredients() {
-        ingredients = new HashSet<>();
+        ingredients = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Ingredient ingredient = new Ingredient();
             ingredient.setAmount(new BigDecimal(10));

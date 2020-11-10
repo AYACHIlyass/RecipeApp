@@ -39,7 +39,6 @@ public class Note {
 
     public String toString() {
         return "Note{" +
-                "recipe=" + recipe +
                 ", recipeDescription='" + recipeDescription + '\'' +
                 '}';
     }

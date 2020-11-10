@@ -1,7 +1,7 @@
 package org.mql.recipe.model;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Recipe {
@@ -19,18 +19,28 @@ public class Recipe {
     private Difficulty difficulty;
     @OneToOne(cascade = CascadeType.ALL)
     private Note note;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredient;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", fetch = FetchType.EAGER)
+    private List<Ingredient> ingredients;
     @ManyToMany
     @JoinTable(name = "RECIPE_CATEGORY",
-            joinColumns= @JoinColumn(name = "Recipe_ID"),
-            inverseJoinColumns = @JoinColumn(name= "Category_ID")
+            joinColumns = @JoinColumn(name = "Recipe_ID"),
+            inverseJoinColumns = @JoinColumn(name = "Category_ID")
     )
     private Set<Category> categories;
     @Lob
     private Byte[] image;
 
     public Recipe() {
+//        System.err.println("Recipe Constructor by the thread : " + Thread.currentThread());
+        if (ingredients == null) {
+            ingredients = new ArrayList<>();
+        }
+        if (categories == null) {
+            categories = new HashSet<>();
+        }
+        if (note == null) {
+            note = new Note();
+        }
     }
 
     public String getDescription() {
@@ -121,12 +131,12 @@ public class Recipe {
         this.id = id;
     }
 
-    public Set<Ingredient> getIngredient() {
-        return ingredient;
+    public List<Ingredient> getIngredients() {
+        return ingredients;
     }
 
-    public void setIngredient(Set<Ingredient> ingredient) {
-        this.ingredient = ingredient;
+    public void setIngredients(List<Ingredient> ingredient) {
+        this.ingredients = ingredient;
     }
 
     public Set<Category> getCategories() {
@@ -135,5 +145,24 @@ public class Recipe {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", prepTime=" + prepTime +
+                ", cockTime=" + cockTime +
+                ", servings=" + servings +
+                ", source='" + source + '\'' +
+                ", url='" + url + '\'' +
+                ", directions='" + directions + '\'' +
+                ", difficulty=" + difficulty +
+                ", note=" + note +
+//                ", ingredients=" + ingredients +
+                ", categories=" + categories +
+                ", image=" + Arrays.toString(image) +
+                '}';
     }
 }

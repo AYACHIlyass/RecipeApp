@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/recipe")
 public class IndexController {
     private RecipeService service;
 

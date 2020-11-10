@@ -34,4 +34,10 @@ public class RecipeServiceJPAImpl implements RecipeService {
     public Recipe findById(Long id) {
         return repository.findById(id).get();
     }
+
+    @Override
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
 }

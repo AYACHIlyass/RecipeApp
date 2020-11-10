@@ -23,7 +23,7 @@ class RecipeServiceTest {
         List<Recipe> recipes = service.getAllRecipes();
         assertNotNull(recipes);
         assertNotNull(recipes.get(0).getCategories());
-        assertNotNull(recipes.get(0).getIngredient());
+        assertNotNull(recipes.get(0).getIngredients());
         assertNotNull(recipes.get(0).getNote());
     }
 
