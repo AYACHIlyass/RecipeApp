@@ -1,6 +1,7 @@
 package org.mql.recipe.bootstrap;
 
 
+import org.hibernate.validator.constraints.Range;
 import org.mql.recipe.model.*;
 import org.mql.recipe.repository.CategoryRepository;
 import org.mql.recipe.repository.RecipeRepository;
@@ -17,6 +18,7 @@ import java.util.*;
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
+    public static final String URL = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.bbcgoodfood.com%2Frecipes%2Fcollection%2Feasy-recipes&psig=AOvVaw0sgc_pfpb02ZZk_NR-Ibpx&ust=1605135677649000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPDMvceK-ewCFQAAAAAdAAAAABAD";
     private Set<Category> categories;
     private List<Ingredient> ingredients;
     private Note note;
@@ -45,12 +47,12 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
             recipe = new Recipe();
             recipe.setCockTime(Integer.valueOf(10));
             recipe.setPrepTime(Integer.valueOf(10));
-            recipe.setDescription("description");
+            recipe.setDescription("this is a description");
             recipe.setDifficulty(Difficulty.EASY);
-            recipe.setDirections("Directions");
-            recipe.setServings((new Random()).nextInt(10));
-            recipe.setSource("source");
-            recipe.setUrl("Url");
+            recipe.setDirections("this are Directions");
+            recipe.setServings((Integer.valueOf(10)));
+            recipe.setSource("this is a source");
+            recipe.setUrl(URL);
             recipe.setImage(null);
             note = new Note();
             note.setRecipeDescription("Note Description");
@@ -81,7 +83,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         for (int i = 0; i < 5; i++) {
             Ingredient ingredient = new Ingredient();
             ingredient.setAmount(new BigDecimal(10));
-            ingredient.setDescription("Description");
+            ingredient.setDescription("this is a Description");
             Optional<UnitOfMeasure> unit = measureRepository.findById(Long.valueOf(i + 1));
             if (unit.isPresent()) {
                 ingredient.setUnit(unit.get());
@@ -92,8 +94,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
             ingredients.add(ingredient);
         }
 
-
     }
-
 
 }

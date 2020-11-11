@@ -1,6 +1,9 @@
 package org.mql.recipe.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "unit_of_measure")
@@ -8,8 +11,9 @@ public class UnitOfMeasure {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
+    @Length(min= 10 , message = "enter at least 10 characters.")
     private String uom;
-
 
     public UnitOfMeasure() {
     }

@@ -1,6 +1,9 @@
 package org.mql.recipe.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Note {
@@ -10,6 +13,8 @@ public class Note {
     @OneToOne
     private Recipe recipe;
     @Lob
+    @NotNull(message = "description is required.")
+    @Length(min = 10 , max = 600 , message = "enter a valid description [min=10,max=600]")
     private String recipeDescription;
 
     public Note(Long id, Recipe recipe, String recipeDescription) {

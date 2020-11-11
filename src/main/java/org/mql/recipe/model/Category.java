@@ -1,6 +1,8 @@
 package org.mql.recipe.model;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -8,6 +10,8 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Lob
+    @NotNull(message = "description is required.")
     private String description;
     @ManyToMany(mappedBy = "categories")
     private Set<Recipe> recipes;

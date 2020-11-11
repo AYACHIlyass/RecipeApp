@@ -1,6 +1,13 @@
 package org.mql.recipe.model;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.URL;
+
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 @Entity
@@ -8,30 +15,49 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Lob
+    @NotNull(message = "description is required.")
+    @Length(min = 10 , max = 600 , message = "enter a valid description [min=10,max=600]")
     private String description;
+    @Min(value = 1, message = "enter a preparation time greater than 0.")
+    @NotNull(message = "preparation time is required.")
     private Integer prepTime;
+    @Min(value=1 ,message = "enter a cock time greater than 0.")
+    @NotNull(message = "cock time is required.")
     private Integer cockTime;
+    @Min(value= 1, message = "enter a cock time greater than 0.")
+    @NotNull(message = "cock time is required.")
     private Integer servings;
+    @NotNull(message = "source is required.")
+    @Length(min = 10 , max = 600 , message = "enter a valid source [min=10,max=600]")
     private String source;
+    @URL(message = "enter a valid url")
     private String url;
+    @Lob
+    @NotNull(message = "source is required.")
+    @Length(min = 10 , max = 600 , message = "enter a valid source [min=10,max=600]")
     private String directions;
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
     @OneToOne(cascade = CascadeType.ALL)
+    @Valid
     private Note note;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe",orphanRemoval = true)
+    @Valid
+    @Size(min = 1 ,message = "add at least one ingredient.")
     private List<Ingredient> ingredients;
     @ManyToMany
     @JoinTable(name = "RECIPE_CATEGORY",
             joinColumns = @JoinColumn(name = "Recipe_ID"),
             inverseJoinColumns = @JoinColumn(name = "Category_ID")
     )
+    @Valid
+    @Size(min = 1 , message = "choose at least one category")
     private Set<Category> categories;
     @Lob
     private Byte[] image;
 
     public Recipe() {
-//        System.err.println("Recipe Constructor by the thread : " + Thread.currentThread());
         if (ingredients == null) {
             ingredients = new ArrayList<>();
         }

@@ -17,7 +17,11 @@
 </head>
 <body>
 <div class="container mt-3">
-    <form th:action="@{${recipe.getId()==null? 'save':'update'}}" th:object="${recipe}" method="post" >
+
+    <form th:action="@{${recipe.getId()==null? 'save':'update'}}" th:object="${recipe}" method="post">
+        <ul th:if="${#fields.hasErrors('all')}">
+            <li style="color: red" th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
+        </ul>
         <div class="form-row">
             <div class="col-md-6 mb-3" hidden>
                 <input th:field="*{id}" type="text" class="form-control" id="id" value="Mark">
@@ -26,33 +30,33 @@
                 <label for="description">Description</label>
                 <input th:field="*{description}" type="text" class="form-control"
                        id="description"
-                       >
+                >
             </div>
             <div class="col-md-6 mb-3">
                 <label for="prepTime">preparation Time</label>
-                <input th:field="*{prepTime}" type="number" class="form-control" id="prepTime" >
+                <input th:field="*{prepTime}" type="number" class="form-control" id="prepTime">
             </div>
         </div>
 
         <div class="form-row">
             <div class="col-md-6 mb-3">
                 <label for="cockTime">cock Time</label>
-                <input th:field="*{cockTime}" type="number" class="form-control" id="cockTime" >
+                <input th:field="*{cockTime}" type="number" class="form-control" id="cockTime">
             </div>
             <div class="col-md-6 mb-3">
                 <label for="servings">servings</label>
-                <input th:field="*{servings}" type="number" class="form-control" id="servings" >
+                <input th:field="*{servings}" type="number" class="form-control" id="servings">
             </div>
         </div>
 
         <div class="form-row">
             <div class="col-md-6 mb-3">
                 <label for="source">source</label>
-                <input th:field="*{source}" type="text" class="form-control" id="source" >
+                <input th:field="*{source}" type="text" class="form-control" id="source">
             </div>
             <div class="col-md-6 mb-3">
                 <label for="url">url</label>
-                <input th:field = "*{url}" type="text" class="form-control" id="url" >
+                <input th:field="*{url}" type="text" class="form-control" id="url">
             </div>
         </div>
 
@@ -60,12 +64,12 @@
         <div class="form-row">
             <div class="col-md-6 mb-3">
                 <label for="directions">directions</label>
-                <input th:field="*{directions}" type="text" class="form-control" id="directions" >
+                <input th:field="*{directions}" type="text" class="form-control" id="directions">
             </div>
 
             <div class="col-md-3 mb-3">
                 <label for="category">category</label>
-                <select class="form-control" th:field="*{categories}" id="category" multiple >
+                <select class="form-control" th:field="*{categories}" id="category" multiple>
                     <option th:each="category : ${categoriesList}"
                             th:field="*{categories}"
                             th:value="${category.id}" th:text="${category.getDescription()}">
@@ -74,51 +78,79 @@
             </div>
             <div class="col-md-3 mb-3">
                 <label for="difficulty">difficulty</label>
-                <select class="form-control"  th:field="*{difficulty}" id="difficulty">
+                <select class="form-control" th:field="*{difficulty}" id="difficulty">
                     <option th:each="difficulty : ${difficulties} " th:value="${difficulty}" th:text="${difficulty}">
                     </option>
                 </select>
             </div>
         </div>
         <div class="form-row">
-            <div class="col-md-6 mb-3">
-                <label for="note">Note</label>
-                <input th:field="*{note.recipeDescription}" type="text" class="form-control" id="note" >
+            <div class="col-md-6 mb-3" hidden>
+                <input th:field="*{note.id}" type="text" class="form-control" id="noteId" value="Mark">
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" hidden>
+                <input th:field="*{note.recipe.id}" type="text" class="form-control" id="noteRecipeId" value="Mark">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="note">Note</label>
+                <input th:field="*{note.recipeDescription}" type="text" class="form-control" id="note">
+            </div>
+            <div class="col-md-9 mb-3">
                 <div>
                     <label>Ingredients</label>
-                    <table class="table table-hover table-dark" >
+                    <table class="table table-hover table-dark">
                         <thead>
                         <tr>
                             <th>Ingredient</th>
                             <th>description</th>
+                            <th>unit of measure</th>
                             <th>amount</th>
                             <th>
-                                <button type="submit" name="addIngredient" class="btn btn-primary" method="post" >Add Ingredient</button>
+                                <button type="submit" name="addIngredient" class="btn btn-primary" method="post">Add
+                                    Ingredient
+                                </button>
                             </th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="row,rowStat : *{ingredients}">
                             <td th:text="${rowStat.count}">1</td>
-
+                            <div class="col-md-6 mb-3" hidden>
+                                <input th:field="*{ingredients[__${rowStat.index}__].recipe.id}" type="text"
+                                       class="form-control" id="ingredientRecipeId" value="Mark">
+                            </div>
+                            <div class="col-md-6 mb-3" hidden>
+                                <input th:field="*{ingredients[__${rowStat.index}__].id}" type="text"
+                                       class="form-control" id="ingredientId" value="Mark">
+                            </div>
                             <td>
-                                <input type="text" th:field="*{ingredients[__${rowStat.index}__].description}" />
+                                <input type="text" th:field="*{ingredients[__${rowStat.index}__].description}"/>
+                            </td>
+                            <td>
+                                <select class="form-control" th:field="*{ingredients[__${rowStat.index}__].unit.id}"
+                                        id="unit">
+                                    <option th:each="unit : ${unitsList} " th:value="${unit.id}"
+                                            th:text="${unit.getUom()}">
+                                    </option>
+                                </select>
                             </td>
                             <td>
                                 <input type="number" th:field="*{ingredients[__${rowStat.index}__].amount}"/>
                             </td>
                             <td>
-                                <button type="submit" name="removeIngredient" th:value="${rowStat.index}" method="post" class="btn btn-danger" >Remove row</button>
+                                <button type="submit" name="removeIngredient" th:value="${rowStat.index}" method="post"
+                                        class="btn btn-danger">Remove row
+                                </button>
                             </td>
+
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" type="submit" th:text="${recipe.getId()==null? 'Save':'Update'}">Submit form</button>
+        <button class="btn btn-primary" type="submit" th:text="${recipe.getId()==null? 'Save':'Update'}">Submit form
+        </button>
     </form>
 </div>
 </body>
