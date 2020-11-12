@@ -1,5 +1,6 @@
 package org.mql.recipe.controller;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.mql.recipe.model.*;
 import org.mql.recipe.repository.UnitOfMeasureRepository;
 import org.mql.recipe.service.CategoryService;
@@ -9,10 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @RequestMapping("/recipe")
@@ -60,7 +67,7 @@ public class RecipeController {
     }
 
     @PostMapping(value = "/save")
-    public String addRecipe(@ModelAttribute("recipe") @Valid final Recipe recipe , BindingResult bindingResult) {
+    public String addRecipe(@ModelAttribute("recipe") @Valid final Recipe recipe, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "/recipes/addRecipe";
         }
@@ -90,6 +97,29 @@ public class RecipeController {
         recipeService.delete(id);
         return "redirect:/index";
     }
+
+    @GetMapping(value = "/{id}/image")
+    public String changeImageForm(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("id", id);
+        return "recipes/updateImage";
+    }
+
+    @PostMapping(value = "/{id}/updateImage")
+    public String updateImage(@PathVariable("id") Long id, @RequestParam("imagefile") MultipartFile file) {
+        recipeService.updateImage(id, file);
+        return "redirect:/index";
+    }
+
+    @GetMapping(value = "/{id}/getImage")
+    public void getImage(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
+        System.out.println("RecipeController.getImage");
+        response.setContentType("image/jpeg"); // Or whatever format you wanna use
+        byte[] array = recipeService.getImage(id);
+        if (array == null) return;
+        InputStream is = new ByteArrayInputStream(array);
+        IOUtils.copy(is, response.getOutputStream());
+    }
+
 
     @PostMapping(value = {"/save", "/update"}, params = {"addIngredient"})
     public String addIngredient(@ModelAttribute("recipe") final Recipe recipe) {

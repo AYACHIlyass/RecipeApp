@@ -1,7 +1,6 @@
 package org.mql.recipe.bootstrap;
 
 
-import org.hibernate.validator.constraints.Range;
 import org.mql.recipe.model.*;
 import org.mql.recipe.repository.CategoryRepository;
 import org.mql.recipe.repository.RecipeRepository;
@@ -45,7 +44,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private void init() {
         for (int i = 0; i < 3; i++) {
             recipe = new Recipe();
-            recipe.setCockTime(Integer.valueOf(10));
+            recipe.setCookTime(Integer.valueOf(10));
             recipe.setPrepTime(Integer.valueOf(10));
             recipe.setDescription("this is a description");
             recipe.setDifficulty(Difficulty.EASY);

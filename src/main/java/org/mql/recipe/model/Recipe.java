@@ -24,7 +24,7 @@ public class Recipe {
     private Integer prepTime;
     @Min(value=1 ,message = "enter a cock time greater than 0.")
     @NotNull(message = "cock time is required.")
-    private Integer cockTime;
+    private Integer cookTime;
     @Min(value= 1, message = "enter a cock time greater than 0.")
     @NotNull(message = "cock time is required.")
     private Integer servings;
@@ -85,12 +85,12 @@ public class Recipe {
         this.prepTime = prepTime;
     }
 
-    public Integer getCockTime() {
-        return cockTime;
+    public Integer getCookTime() {
+        return cookTime;
     }
 
-    public void setCockTime(Integer cockTime) {
-        this.cockTime = cockTime;
+    public void setCookTime(Integer cockTime) {
+        this.cookTime = cockTime;
     }
 
     public Integer getServings() {
@@ -179,7 +179,7 @@ public class Recipe {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", prepTime=" + prepTime +
-                ", cockTime=" + cockTime +
+                ", cockTime=" + cookTime +
                 ", servings=" + servings +
                 ", source='" + source + '\'' +
                 ", url='" + url + '\'' +
