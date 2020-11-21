@@ -18,7 +18,7 @@ public class PointCutExpressions {
     public void forServicePackage(){}
 
     @Pointcut("forBootstrapPackage() || forControllerPackage() || forRepositoryPackage()|| forServicePackage()")
-    public void Appflow(){}
+    public void AppFlow(){}
 
 
 }
